@@ -1,0 +1,60 @@
+# new-pets.yaml — 新宠物定义文件
+# 每个条目描述一个待生成的桌面宠物
+# generate-pets.py 会读取此文件并批量生成精灵图
+
+pets:
+  - slug: glitch-ghost
+    name: "Glitch Ghost"
+    description: "A translucent digital ghost that haunts your terminal with pixel distortions."
+    category: "ai-tool"
+    platform: ["browser"]
+    tags: ["ghost", "glitch", "terminal", "digital", "spooky", "transparent"]
+    featured: false
+    # 基础外观描述，用于生成参考图和各动画帧
+    appearance: "a small translucent ghost made of glitching pixels, with a round body, tiny arms, one big glowing cyan eye, and a digital static aura trailing behind"
+    color_scheme: "cyan and white with purple glitch fragments"
+    size: "small, about 48x48 pixel art style"
+
+  - slug: syntax-slime
+    name: "Syntax Slime"
+    description: "A friendly code-green slime that bounces along your taskbar fixing bugs."
+    category: "ai-tool"
+    platform: ["browser"]
+    tags: ["slime", "code", "green", "bouncy", "bug-fix", "cute"]
+    featured: false
+    appearance: "a cute bouncing green slime blob with a happy face, two small antennae, and tiny code snippets floating inside its translucent body"
+    color_scheme: "bright green with dark green shading and white code symbols inside"
+    size: "small, about 48x48 pixel art style"
+
+  - slug: neon-nyan
+    name: "Neon Nyan"
+    description: "A cyberpunk cat with neon circuit patterns that streaks across your desktop."
+    category: "ai-tool"
+    platform: ["browser"]
+    tags: ["cat", "cyberpunk", "neon", "circuit", "fast", "rainbow"]
+    featured: false
+    appearance: "a small cyberpunk cat with dark fur, glowing neon pink and blue circuit-line patterns on its body, a long striped tail, and bright LED eyes"
+    color_scheme: "dark body with neon magenta and electric blue circuit lines"
+    size: "small, about 48x48 pixel art style"
+
+  - slug: commit-crow
+    name: "Commit Crow"
+    description: "A clever crow that collects shiny commits and nests on your GitHub contributions graph."
+    category: "ai-tool"
+    platform: ["browser"]
+    tags: ["crow", "git", "commit", "github", "clever", "bird"]
+    featured: false
+    appearance: "a small intelligent black crow with shiny purple-blue feathers, carrying a tiny git branch in its beak, with bright orange eyes"
+    color_scheme: "black feathers with iridescent purple-blue sheen, orange beak and eyes"
+    size: "small, about 48x48 pixel art style"
+
+  - slug: pixel-phoenix
+    name: "Pixel Phoenix"
+    description: "A reborn pixel phoenix that rises from deprecated code to light up your IDE."
+    category: "ai-tool"
+    platform: ["browser"]
+    tags: ["phoenix", "fire", "pixel", "rebirth", "hot", "glow"]
+    featured: false
+    appearance: "a majestic small pixel art phoenix with fiery orange-red plumage, trailing ember particles, bright golden eyes, and a compact elegant body"
+    color_scheme: "gradient from deep red to bright orange to golden yellow"
+    size: "small, about 48x48 pixel art style"
