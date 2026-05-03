@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllPets, getPetBySlug } from "@/shared/lib/pets";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import { PetDetailClient } from "./pet-detail-client";
 
 export function generateStaticParams() {
   return getAllPets().map((pet) => ({ slug: pet.slug }));
@@ -50,25 +51,14 @@ export default async function PetPage({ params }: Props) {
 
       {/* Header */}
       <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2">
-        {/* Sprite preview */}
-        <div className="relative flex items-center justify-center rounded-2xl border border-black/5 bg-white/55 backdrop-blur-md p-8">
-          <div
-            className="pet-sprite-frame"
-            style={{ "--pet-scale": "1" } as React.CSSProperties}
-          >
-            <div
-              className="pet-sprite"
-              role="img"
-              aria-label={`${pet.name} animated`}
-              style={{
-                "--sprite-url": `url(${pet.image})`,
-                "--sprite-row": "0",
-                "--sprite-frames": "6",
-                "--sprite-duration": "1.1s",
-              } as React.CSSProperties}
-            />
-          </div>
-        </div>
+        {/* Animated sprite preview */}
+        <PetDetailClient
+          image={pet.image}
+          name={pet.name}
+          spriteRow={pet.spriteRow}
+          spriteFrames={pet.spriteFrames}
+          spriteDuration={pet.spriteDuration}
+        />
 
         <div className="flex flex-col justify-center">
           {/* Tags */}

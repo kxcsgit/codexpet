@@ -1,6 +1,7 @@
 "use client";
 
 import { PetCard } from "@/shared/components/pet-card";
+import { PetSprite } from "@/shared/components/pet-sprite";
 import Link from "next/link";
 import { useState } from "react";
 import type { Pet } from "@/shared/lib/pets";
@@ -86,22 +87,14 @@ export function HomePageClient({ pets, categoryCount }: HomePageProps) {
                     i % 2 === 0 ? "rotate-[-3deg] -translate-y-1" : "rotate-[3deg] translate-y-1"
                   }`}
                 >
-                  <div
-                    className="pet-sprite-frame"
-                    style={{ "--pet-scale": "0.55" } as React.CSSProperties}
-                  >
-                    <div
-                      className="pet-sprite"
-                      role="img"
-                      aria-label={`${pet.name} animated`}
-                      style={{
-                        "--sprite-url": `url(${pet.image})`,
-                        "--sprite-row": String(i % 8),
-                        "--sprite-frames": "6",
-                        "--sprite-duration": "1.1s",
-                      } as React.CSSProperties}
-                    />
-                  </div>
+                  <PetSprite
+                    image={pet.image}
+                    name={pet.name}
+                    spriteRow={pet.spriteRow}
+                    spriteFrames={pet.spriteFrames}
+                    spriteDuration={pet.spriteDuration}
+                    scale={0.55}
+                  />
                   <span className="mt-1 font-mono text-[10px] tracking-[0.18em] text-stone-700 uppercase">
                     {pet.name}
                   </span>
@@ -158,6 +151,9 @@ export function HomePageClient({ pets, categoryCount }: HomePageProps) {
                 featured={pet.featured}
                 tags={pet.tags}
                 kind={pet.kind}
+                spriteRow={pet.spriteRow}
+                spriteFrames={pet.spriteFrames}
+                spriteDuration={pet.spriteDuration}
               />
             ))}
           </div>

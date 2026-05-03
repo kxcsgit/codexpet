@@ -15,6 +15,9 @@ export interface Pet {
   kind?: string;
   author?: string;
   stars?: number;
+  spriteRow?: number;
+  spriteFrames?: number;
+  spriteDuration?: string;
   content: string;
 }
 
