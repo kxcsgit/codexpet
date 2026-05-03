@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CodexPet 🐾
+
+**The ultimate desktop pets directory.** Discover and download the best desktop pets — from AI coding companions to classic mascots.
+
+🌐 **Live site:** [codexpet.space](https://codexpet.space)
+
+## Features
+
+- 📂 Categorized pet directory (AI tools, indie, classic, browser)
+- ⭐ Featured pets showcase
+- 🔍 SEO-optimized with sitemap, robots.txt, and structured data
+- 📱 Fully responsive design
+- 📝 MDX-based content — easy to add new pets
+- 🚀 Static site generation for blazing fast performance
+
+## Tech Stack
+
+- **Next.js 16** (App Router + Turbopack)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **MDX** for content
+- **Vercel** for deployment
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+# Install dependencies
+npm install
+
+# Start dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Build for production
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Adding a New Pet
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a new `.mdx` file in `content/pets/`:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```mdx
+---
+name: "Pet Name"
+description: "Short description"
+category: "ai-tool"  # ai-tool | indie | classic | browser
+platform: ["windows", "macos", "linux"]
+image: "/imgs/pets/pet-name.svg"
+downloadUrl: "https://..."
+featured: false
+tags: ["tag1", "tag2"]
+author: "Author Name"
+stars: 1000
+---
 
-## Learn More
+# Pet Name
 
-To learn more about Next.js, take a look at the following resources:
+Full description in Markdown...
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+├── content/pets/          # MDX pet entries
+├── public/imgs/pets/      # Pet images
+├── src/
+│   ├── app/
+│   │   ├── page.tsx       # Homepage
+│   │   ├── pets/[slug]/   # Pet detail pages
+│   │   ├── category/      # Category pages
+│   │   ├── submit/        # Submit a pet
+│   │   ├── sitemap.ts     # SEO sitemap
+│   │   └── robots.ts      # SEO robots
+│   └── shared/
+│       ├── components/    # UI components
+│       └── lib/           # Data layer
+└── next.config.ts
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT

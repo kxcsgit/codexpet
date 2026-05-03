@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f688;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)" rx="20"/>
+  <text x="400" y="220" font-size="120" text-anchor="middle" dominant-baseline="central">📎</text>
+  <text x="400" y="340" font-size="28" text-anchor="middle" fill="white" font-family="system-ui" font-weight="bold">Clippy</text>
+  <text x="400" y="380" font-size="16" text-anchor="middle" fill="white" opacity="0.7" font-family="system-ui">codexpet.space</text>
+</svg>
