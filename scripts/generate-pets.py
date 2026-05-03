@@ -89,8 +89,8 @@ ANIMATION_ROWS = [
 API_MODEL = "gpt-image-2-text-to-image"
 
 # 轮询配置
-POLL_INTERVAL = 5         # 轮询间隔 (秒)
-POLL_TIMEOUT = 300        # 单任务超时 (秒)
+POLL_INTERVAL = 10        # 轮询间隔 (秒)
+POLL_TIMEOUT = 600        # 单任务超时 (秒)
 MAX_RETRIES = 3           # 最大重试次数
 RETRY_DELAY = 10          # 重试等待 (秒)
 
@@ -243,21 +243,21 @@ class ImageAPI:
                 resp.raise_for_status()
                 data = resp.json()
 
-                # 尝试多种响应结构 (kie.ai 返回 data 嵌套)
+                # kie.ai 返回 {code:200, data: {state:"generating"/"success"/"failed", resultJson:"..."}}
                 record = data.get("data", data.get("result", data))
-                if isinstance(record, dict) and "data" in record:
-                    record = record["data"]
-                status = str(record.get("status", record.get("state", record.get("taskStatus", ""))))
+                status = str(record.get("state", record.get("status", record.get("taskStatus", ""))))
 
-                # 任务完成 (kie.ai: status=1 表示成功)
-                if status in ("1", "2", "success", "completed", "done", "5"):
+                # 任务完成 (kie.ai: state="success")
+                if status in ("success", "1", "2", "completed", "done", "5"):
                     result_json = record.get("resultJson", record.get("result", record.get("output", {})))
                     if isinstance(result_json, str):
-                        import json
+                        import json as _json
                         try:
-                            result_json = json.loads(result_json)
+                            result_json = _json.loads(result_json)
                         except Exception:
-                            pass
+                            result_json = {}
+                    if not isinstance(result_json, dict):
+                        result_json = {}
 
                     urls = result_json.get("resultUrls", result_json.get("urls", []))
                     if urls and urls[0]:
@@ -271,11 +271,12 @@ class ImageAPI:
                     raise RuntimeError(f"任务完成但未找到结果 URL: {data}")
 
                 # 任务失败
-                if status in ("-1", "3", "failed", "error"):
-                    raise RuntimeError(f"任务失败: {data}")
+                if status in ("failed", "error", "-1", "3"):
+                    fail_msg = record.get("failMsg", record.get("failCode", ""))
+                    raise RuntimeError(f"任务失败: {fail_msg or data}")
 
                 # 显示进度
-                progress_pct = min(95, int(elapsed / 42 * 100))
+                progress_pct = min(95, int(elapsed / 500 * 100))
                 sys.stdout.write(f"\r    ⏳ 等待中... {elapsed:.0f}s (~{progress_pct}%)")
                 sys.stdout.flush()
 
@@ -337,28 +338,11 @@ def compose_spritesheet(row_images: list, output_path: Path) -> None:
 
         strip = Image.open(img_path).convert("RGBA")
 
-        # 将生成的条带缩放到精灵图标准宽度和单元格高度
-        expected_strip_width = SHEET_WIDTH    # 1536 = 8 * 192
-        expected_strip_height = CELL_HEIGHT   # 208
-
-        if strip.size != (expected_strip_width, expected_strip_height):
-            # 按比例缩放：先按宽度缩放，再裁剪/填充高度
-            ratio = expected_strip_width / strip.width
-            new_h = int(strip.height * ratio)
-            strip = strip.resize((expected_strip_width, new_h), Image.LANCZOS)
-
-            if new_h > expected_strip_height:
-                # 裁剪高度
-                strip = strip.crop((0, 0, expected_strip_width, expected_strip_height))
-            elif new_h < expected_strip_height:
-                # 填充高度
-                padded = Image.new(
-                    "RGBA",
-                    (expected_strip_width, expected_strip_height),
-                    (255, 255, 255, 0),
-                )
-                padded.paste(strip, (0, 0))
-                strip = padded
+        # 将生成的条带强制缩放到精灵图标准尺寸 (1536×208)
+        # API 生成的 strip 尺寸不固定，需要直接 resize 到目标大小
+        # 使用 LANCZOS 高质量缩放，保持内容完整性
+        if strip.size != (SHEET_WIDTH, CELL_HEIGHT):
+            strip = strip.resize((SHEET_WIDTH, CELL_HEIGHT), Image.LANCZOS)
 
         atlas.paste(strip, (0, row_idx * CELL_HEIGHT))
 
