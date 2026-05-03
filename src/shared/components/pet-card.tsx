@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 interface PetCardProps {
@@ -8,7 +10,8 @@ interface PetCardProps {
   platform: string[];
   image: string;
   featured?: boolean;
-  stars?: number;
+  tags?: string[];
+  kind?: string;
 }
 
 export function PetCard({
@@ -16,68 +19,62 @@ export function PetCard({
   name,
   description,
   category,
-  platform,
   image,
   featured,
-  stars,
+  tags,
+  kind,
 }: PetCardProps) {
-  const categoryColors: Record<string, string> = {
-    "ai-tool": "bg-purple-100 text-purple-700",
-    indie: "bg-orange-100 text-orange-700",
-    classic: "bg-blue-100 text-blue-700",
-    browser: "bg-green-100 text-green-700",
-  };
-
-  const platformIcons: Record<string, string> = {
-    windows: "🪟",
-    macos: "🍎",
-    linux: "🐧",
-    browser: "🌐",
+  const kindLabels: Record<string, string> = {
+    creature: "creature",
+    character: "character",
+    object: "object",
+    mascot: "mascot",
   };
 
   return (
     <Link
       href={`/pets/${slug}`}
-      className="group block rounded-2xl border border-gray-200 bg-white p-5 transition-all hover:border-gray-300 hover:shadow-lg"
+      className="group relative flex flex-col items-center rounded-2xl border border-white/70 bg-white/55 px-3 pt-3 pb-4 shadow-lg shadow-blue-900/10 backdrop-blur-md transition hover:-translate-y-1 hover:bg-white"
     >
-      <div className="relative mb-4 aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={image}
-          alt={name}
-          className="h-full w-full object-cover transition-transform group-hover:scale-105"
+      {/* Spritesheet preview */}
+      <div className="pet-sprite-frame" style={{ "--pet-scale": "0.5" } as React.CSSProperties}>
+        <div
+          className="pet-sprite"
+          role="img"
+          aria-label={`${name} animated`}
+          style={{
+            "--sprite-url": `url(${image})`,
+            "--sprite-row": "0",
+            "--sprite-frames": "6",
+            "--sprite-duration": "1.1s",
+          } as React.CSSProperties}
         />
-        {featured && (
-          <span className="absolute top-3 left-3 rounded-full bg-yellow-400 px-2.5 py-0.5 text-xs font-semibold text-yellow-900">
-            ⭐ Featured
-          </span>
-        )}
       </div>
 
-      <div className="mb-2 flex items-center gap-2">
-        <span
-          className={`rounded-full px-2 py-0.5 text-xs font-medium ${categoryColors[category] || "bg-gray-100 text-gray-700"}`}
-        >
-          {category}
-        </span>
-        <div className="flex gap-1">
-          {platform.map((p) => (
-            <span key={p} title={p}>
-              {platformIcons[p] || "❓"}
+      {/* Name */}
+      <span className="mt-1 font-mono text-[10px] tracking-[0.18em] text-stone-700 uppercase">
+        {name}
+      </span>
+
+      {/* Tags row */}
+      {tags && tags.length > 0 && (
+        <div className="mt-2 flex flex-wrap justify-center gap-1">
+          {tags.slice(0, 3).map((tag) => (
+            <span
+              key={tag}
+              className="rounded-full bg-white/70 px-2 py-0.5 text-[10px] font-mono text-stone-500 border border-black/5"
+            >
+              {tag}
             </span>
           ))}
         </div>
-      </div>
+      )}
 
-      <h3 className="mb-1 text-lg font-bold text-gray-900 group-hover:text-indigo-600">
-        {name}
-      </h3>
-      <p className="line-clamp-2 text-sm text-gray-500">{description}</p>
-
-      {stars && (
-        <div className="mt-3 flex items-center gap-1 text-xs text-gray-400">
-          ⭐ {stars.toLocaleString()} stars
-        </div>
+      {/* Featured badge */}
+      {featured && (
+        <span className="absolute top-2 right-2 rounded-full bg-amber-100 px-2 py-0.5 text-[9px] font-mono font-medium text-amber-800 tracking-wider uppercase">
+          featured
+        </span>
       )}
     </Link>
   );

@@ -30,72 +30,91 @@ export default async function PetPage({ params }: Props) {
   const pet = getPetBySlug(slug);
   if (!pet) return notFound();
 
-  const platformIcons: Record<string, string> = {
-    windows: "🪟 Windows",
-    macos: "🍎 macOS",
-    linux: "🐧 Linux",
-    browser: "🌐 Browser",
+  const kindLabels: Record<string, string> = {
+    creature: "creature",
+    character: "character",
+    object: "object",
+    mascot: "mascot",
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
+    <div className="mx-auto max-w-4xl px-5 py-12 md:px-8">
       {/* Breadcrumb */}
-      <nav className="mb-6 text-sm text-gray-500">
-        <Link href="/" className="hover:text-gray-900">Home</Link>
-        <span className="mx-2">/</span>
-        <Link href={`/category/${pet.category}`} className="hover:text-gray-900 capitalize">
-          {pet.category}
+      <nav className="mb-8 text-sm">
+        <Link href="/" className="text-[#4f515c] hover:text-black transition">
+          Home
         </Link>
-        <span className="mx-2">/</span>
-        <span className="text-gray-900">{pet.name}</span>
+        <span className="mx-2 text-stone-300">/</span>
+        <span className="text-[#1a1d2e]">{pet.name}</span>
       </nav>
 
       {/* Header */}
       <div className="mb-10 grid grid-cols-1 gap-8 md:grid-cols-2">
-        <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gray-100">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={pet.image}
-            alt={pet.name}
-            className="h-full w-full object-cover"
-          />
+        {/* Sprite preview */}
+        <div className="relative flex items-center justify-center rounded-2xl border border-black/5 bg-white/55 backdrop-blur-md p-8">
+          <div
+            className="pet-sprite-frame"
+            style={{ "--pet-scale": "1" } as React.CSSProperties}
+          >
+            <div
+              className="pet-sprite"
+              role="img"
+              aria-label={`${pet.name} animated`}
+              style={{
+                "--sprite-url": `url(${pet.image})`,
+                "--sprite-row": "0",
+                "--sprite-frames": "6",
+                "--sprite-duration": "1.1s",
+              } as React.CSSProperties}
+            />
+          </div>
         </div>
+
         <div className="flex flex-col justify-center">
-          <div className="mb-3 flex flex-wrap gap-2">
+          {/* Tags */}
+          <div className="mb-3 flex flex-wrap gap-1.5">
+            {pet.kind && (
+              <span className="rounded-full bg-[#eef1ff] px-2.5 py-0.5 font-mono text-[10px] tracking-[0.12em] text-[#3847f5] uppercase">
+                {kindLabels[pet.kind] || pet.kind}
+              </span>
+            )}
             {pet.tags.map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-600"
+                className="rounded-full bg-white/70 border border-black/5 px-2.5 py-0.5 font-mono text-[10px] tracking-[0.08em] text-stone-500"
               >
                 {tag}
               </span>
             ))}
           </div>
-          <h1 className="mb-3 text-3xl font-extrabold text-gray-900">{pet.name}</h1>
-          <p className="mb-4 text-gray-500">{pet.description}</p>
 
-          <div className="mb-4 flex flex-col gap-2 text-sm text-gray-600">
+          <h1 className="mb-3 text-3xl font-semibold tracking-tight text-[#1a1d2e]">
+            {pet.name}
+          </h1>
+          <p className="mb-4 text-base leading-7 text-[#4f515c]">
+            {pet.description}
+          </p>
+
+          <div className="mb-6 flex flex-col gap-2 text-sm text-[#4f515c]">
             {pet.author && (
               <div>
-                <span className="font-medium text-gray-900">Author:</span> {pet.author}
+                <span className="font-medium text-[#1a1d2e]">Author:</span>{" "}
+                {pet.author}
               </div>
             )}
             {pet.stars && (
               <div>
-                <span className="font-medium text-gray-900">Stars:</span> ⭐ {pet.stars.toLocaleString()}
+                <span className="font-medium text-[#1a1d2e]">Stars:</span>{" "}
+                {pet.stars.toLocaleString()}
               </div>
             )}
-            <div>
-              <span className="font-medium text-gray-900">Platforms:</span>{" "}
-              {pet.platform.map((p) => platformIcons[p] || p).join(" · ")}
-            </div>
           </div>
 
           <a
             href={pet.downloadUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow hover:bg-indigo-700"
+            className="inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-black px-6 text-sm font-medium text-white transition hover:bg-black/85"
           >
             Download / Visit →
           </a>
@@ -108,8 +127,11 @@ export default async function PetPage({ params }: Props) {
       </article>
 
       {/* Back */}
-      <div className="mt-12 border-t border-gray-200 pt-6">
-        <Link href="/" className="text-sm text-indigo-600 hover:text-indigo-700">
+      <div className="mt-12 border-t border-black/10 pt-6">
+        <Link
+          href="/"
+          className="text-sm text-[#3847f5] hover:text-[#1a1d2e] transition"
+        >
           ← Back to all pets
         </Link>
       </div>

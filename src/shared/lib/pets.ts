@@ -12,6 +12,7 @@ export interface Pet {
   downloadUrl: string;
   featured: boolean;
   tags: string[];
+  kind?: string;
   author?: string;
   stars?: number;
   content: string;

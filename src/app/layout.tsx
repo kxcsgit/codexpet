@@ -1,33 +1,50 @@
 import type { Metadata } from "next";
-import { Inter, Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Header, Footer } from "@/shared/components/layout";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
 
-const inter = Inter({ subsets: ["latin"] });
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://codexpet.space"),
   title: {
-    default: "CodexPet — Desktop Pets Directory",
+    default: "CodexPet — Animated pixel pets for the Codex CLI",
     template: "%s | CodexPet",
   },
   description:
-    "Discover and download the best desktop pets. From AI coding companions to classic mascots — find your perfect digital friend.",
-  keywords: ["desktop pets", "shimeji", "desktop goose", "codex pet", "ai pet", "virtual pet", "screen pet"],
+    "CodexPet is the public gallery of animated pixel pets for the Codex CLI. Browse open-source companions, preview their animations, and install one with a single command.",
+  keywords: [
+    "codex pet",
+    "codex CLI pet",
+    "pixel pet",
+    "animated pet",
+    "developer mascot",
+    "terminal pet",
+    "desktop pet",
+    "shimeji",
+  ],
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "CodexPet",
-    title: "CodexPet — Desktop Pets Directory",
-    description: "Discover and download the best desktop pets.",
+    title: "CodexPet — Animated pixel pets for the Codex CLI",
+    description:
+      "Browse open-source companions, preview their animations, and install one with a single command.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "CodexPet — Desktop Pets Directory",
-    description: "Discover and download the best desktop pets.",
+    title: "CodexPet — Animated pixel pets for the Codex CLI",
+    description:
+      "Browse open-source companions, preview their animations, and install one with a single command.",
   },
   robots: {
     index: true,
@@ -41,13 +58,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn("font-sans", geist.variable)}>
-      <body className={`${inter.className} antialiased`}>
-        <div className="flex min-h-screen flex-col">
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </div>
+    <html
+      lang="en"
+      className={cn(
+        "h-full antialiased",
+        geistSans.variable,
+        geistMono.variable
+      )}
+    >
+      <body className="min-h-full flex flex-col bg-[#f7f8ff] text-[#050505]">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );
